@@ -21,7 +21,7 @@
 		font-weight: 800;
 		line-height: 1.1;
 		margin: 0;
-		background: linear-gradient(135deg, var(--sl-color-white) 0%, var(--sl-color-accent-high) 100%);
+		background: linear-gradient(135deg, var(--sl-color-text) 0%, var(--sl-color-accent) 100%);
 		-webkit-background-clip: text;
 		-webkit-text-fill-color: transparent;
 		background-clip: text;
@@ -58,12 +58,12 @@
 
 	[data-page-type="landing"] .hero-actions .primary {
 		background: var(--sl-color-accent);
-		color: var(--sl-color-text-invert);
+		color: white;
 	}
 
 	[data-page-type="landing"] .hero-actions .secondary {
 		border: 1px solid var(--sl-color-gray-4);
-		color: var(--sl-color-white);
+		color: var(--sl-color-text);
 	}
 
 	[data-page-type="landing"] .hero-actions .secondary:hover {
@@ -358,12 +358,12 @@
 
 	[data-page-type="landing"] .cta-actions .primary {
 		background: var(--sl-color-accent);
-		color: var(--sl-color-text-invert);
+		color: white;
 	}
 
 	[data-page-type="landing"] .cta-actions .secondary {
 		border: 1px solid var(--sl-color-gray-4);
-		color: var(--sl-color-white);
+		color: var(--sl-color-text);
 	}
 
 	/* Responsive */
