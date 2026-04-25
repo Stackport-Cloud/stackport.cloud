@@ -1,0 +1,157 @@
+---
+title: StackPort — Universal AWS Resource Browser
+description: Open-source AWS resource browser for LocalStack, MiniStack, Moto, and real AWS. Browse 35 services, invoke Lambda, manage S3, query DynamoDB, and more.
+template: splash
+---
+
+import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+<div data-page-type="landing">
+
+<section class="hero">
+  <div class="hero-content">
+    <h1>See everything running in your AWS emulator</h1>
+    <p class="tagline">
+      StackPort is an open-source resource browser that connects to <strong>LocalStack</strong>, <strong>MiniStack</strong>, <strong>Moto</strong>, or <strong>real AWS</strong>. Browse 35 services, invoke Lambda functions, manage S3 objects, send SQS messages — all from a single UI.
+    </p>
+    <div class="hero-actions">
+      <a href="/docs/quickstart/" class="primary">Get Started</a>
+      <a href="https://github.com/DaviReisVieira/stackport" class="secondary">GitHub</a>
+    </div>
+  </div>
+  <div class="hero-image">
+    <img src="/images/dashboard.jpeg" alt="StackPort dashboard showing AWS services overview" />
+  </div>
+</section>
+
+<section class="quickstart" id="quickstart">
+  <h2>Up and running in seconds</h2>
+  <p class="subtitle">One command to start browsing your AWS resources</p>
+
+  <div class="quickstart-code">
+    <pre><span class="comment"># With Docker Compose (includes MiniStack emulator)</span>{'\n'}<span class="command">curl -O https://raw.githubusercontent.com/DaviReisVieira/stackport/main/examples/docker-compose.yml</span>{'\n'}<span class="command">docker compose up -d</span>{'\n'}{'\n'}<span class="comment"># Or install directly with pip</span>{'\n'}<span class="command">pip install stackport</span>{'\n'}<span class="command">stackport</span>{'\n'}{'\n'}<span class="comment"># Open http://localhost:8080</span></pre>
+  </div>
+</section>
+
+<section class="features">
+  <h2>Built for local development</h2>
+  <p class="subtitle">Everything you need to understand what's running in your AWS environment</p>
+
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="icon">🔍</div>
+      <h3>35 AWS Services</h3>
+      <p>Browse resources across S3, DynamoDB, Lambda, SQS, EC2, IAM, and 29 more services with a unified interface.</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">🎯</div>
+      <h3>8 Custom Browsers</h3>
+      <p>Dedicated UIs for S3, DynamoDB, Lambda, SQS, EC2, IAM, CloudWatch Logs, and Secrets Manager with service-specific interactions.</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">⚡</div>
+      <h3>Write Operations</h3>
+      <p>Invoke Lambda functions, send SQS messages, upload S3 objects, start/stop EC2 instances, and query DynamoDB tables.</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">🐳</div>
+      <h3>Single Docker Image</h3>
+      <p>One container, no configuration. Works with Docker Compose alongside your emulator of choice.</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">🔌</div>
+      <h3>Any AWS Endpoint</h3>
+      <p>Connect to LocalStack, MiniStack, Moto, MinIO, or real AWS accounts. Supports multiple endpoints simultaneously.</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">📡</div>
+      <h3>Real-time Dashboard</h3>
+      <p>WebSocket-powered live updates show service health and resource counts as they change.</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">💻</div>
+      <h3>CLI Included</h3>
+      <p>Use `stackport status`, `list`, `describe`, and `export` for scripting and CI pipelines.</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">⌨️</div>
+      <h3>Keyboard First</h3>
+      <p>16 keyboard shortcuts for fast navigation. Press `?` to view them all.</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">📦</div>
+      <h3>Export Anywhere</h3>
+      <p>Export resources as JSON or CSV. Copy to clipboard, download files, or pipe CLI output to other tools.</p>
+    </div>
+  </div>
+</section>
+
+<section class="services">
+  <h2>35 AWS Services</h2>
+  <p class="subtitle">Custom browsers highlighted — all others get a searchable resource table</p>
+
+  <div class="service-badges">
+    <span class="service-badge custom">S3</span>
+    <span class="service-badge custom">DynamoDB</span>
+    <span class="service-badge custom">Lambda</span>
+    <span class="service-badge custom">SQS</span>
+    <span class="service-badge custom">EC2</span>
+    <span class="service-badge custom">IAM</span>
+    <span class="service-badge custom">CloudWatch Logs</span>
+    <span class="service-badge custom">Secrets Manager</span>
+    <span class="service-badge">SNS</span>
+    <span class="service-badge">SSM</span>
+    <span class="service-badge">Kinesis</span>
+    <span class="service-badge">EventBridge</span>
+    <span class="service-badge">Route 53</span>
+    <span class="service-badge">KMS</span>
+    <span class="service-badge">CloudFormation</span>
+    <span class="service-badge">Step Functions</span>
+    <span class="service-badge">RDS</span>
+    <span class="service-badge">ECS</span>
+    <span class="service-badge">CloudWatch Monitoring</span>
+    <span class="service-badge">SES</span>
+    <span class="service-badge">ACM</span>
+    <span class="service-badge">WAFv2</span>
+    <span class="service-badge">ECR</span>
+    <span class="service-badge">ElastiCache</span>
+    <span class="service-badge">Glue</span>
+    <span class="service-badge">Athena</span>
+    <span class="service-badge">API Gateway</span>
+    <span class="service-badge">Firehose</span>
+    <span class="service-badge">Cognito</span>
+    <span class="service-badge">EMR</span>
+    <span class="service-badge">ELB</span>
+    <span class="service-badge">EFS</span>
+    <span class="service-badge">CloudFront</span>
+    <span class="service-badge">AppSync</span>
+    <span class="service-badge">STS</span>
+  </div>
+</section>
+
+<section class="screenshots">
+  <h2>See it in action</h2>
+  <p class="subtitle">Dedicated browsers for the services you use most</p>
+
+  <div class="screenshot-grid">
+    <div class="screenshot-card">
+      <img src="/images/lambda.jpeg" alt="Lambda browser showing function details and invocation panel" />
+      <div class="caption">Lambda Browser — invoke functions, view configs, manage aliases</div>
+    </div>
+    <div class="screenshot-card">
+      <img src="/images/s3.jpeg" alt="S3 browser with file upload and folder navigation" />
+      <div class="caption">S3 Browser — upload files, navigate folders, manage objects</div>
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <h2>Start browsing your AWS resources</h2>
+  <p>Open source, free forever. One container to see everything.</p>
+  <div class="cta-actions">
+    <a href="/docs/quickstart/" class="primary">Read the Docs</a>
+    <a href="https://github.com/DaviReisVieira/stackport" class="secondary">Star on GitHub</a>
+  </div>
+</section>
+
+</div>
