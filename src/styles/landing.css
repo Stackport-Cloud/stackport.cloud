@@ -1,4 +1,9 @@
-@layer starlight.custom {
+/*
+ * Landing page styles. Unlayered on purpose: every selector is scoped to
+ * [data-page-type="landing"], and unlayered rules win over Starlight's
+ * markdown content styles (link colors, sibling margins, pre boxes), which
+ * otherwise override the button and card styles below.
+ */
 	/* Landing page hero */
 	[data-page-type="landing"] .hero {
 		display: grid;
@@ -393,13 +398,179 @@
 		}
 	}
 
-	/* Override Starlight's 45rem content cap on splash pages */
-	[data-has-hero] .content-panel .sl-container {
+	/* Hero extras */
+	[data-page-type="landing"] .hero-meta {
+		margin: 0;
+		font-size: var(--sl-text-sm);
+		color: var(--sl-color-gray-3);
+	}
+
+	[data-page-type="landing"] .hero-image video,
+	[data-page-type="landing"] .hero-image video img {
+		width: 100%;
+		height: auto;
+		display: block;
+		aspect-ratio: 16 / 10;
+		object-fit: cover;
+		background: var(--sl-color-gray-6);
+	}
+
+	[data-page-type="landing"] a.star svg {
+		flex-shrink: 0;
+	}
+
+	/* Emulator quick start cards */
+	[data-page-type="landing"] .emulator-grid {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 1rem;
+		text-align: left;
+	}
+
+	[data-page-type="landing"] .emulator-card {
+		background: var(--sl-color-gray-6);
+		border: 1px solid var(--sl-color-gray-5);
+		border-radius: 0.75rem;
+		padding: 1rem 1.25rem 1.25rem;
+		min-width: 0;
+		margin: 0;
+	}
+
+	[data-page-type="landing"] .emulator-card-header {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 0.5rem;
+		margin-bottom: 0.75rem;
+	}
+
+	[data-page-type="landing"] .emulator-card-header h3 {
+		margin: 0;
+		font-size: var(--sl-text-lg);
+		font-weight: 600;
+	}
+
+	[data-page-type="landing"] .emulator-card-header a {
+		font-size: var(--sl-text-sm);
+		color: var(--sl-color-text-accent);
+	}
+
+	[data-page-type="landing"] .emulator-card pre.quickstart-code {
+		margin: 0;
+		padding: 0;
+		background: none;
+		border: none;
+		border-radius: 0;
+		overflow-x: auto;
+		font-family: var(--__sl-font-mono);
+		font-size: var(--sl-text-sm);
+		line-height: 1.7;
+		color: var(--sl-color-gray-1);
+		white-space: pre;
+	}
+
+	[data-page-type="landing"] .quickstart-footer {
+		margin: 1.5rem auto 0;
+		max-width: 48rem;
+		color: var(--sl-color-gray-3);
+		font-size: var(--sl-text-sm);
+	}
+
+	/* Screenshots: wide dashboard card, swapped with the site theme */
+	[data-page-type="landing"] .screenshot-wide {
+		margin-bottom: 1.5rem;
+	}
+
+	[data-page-type="landing"] .screenshot-card picture,
+	[data-page-type="landing"] .screenshot-card picture img {
+		display: block;
+		width: 100%;
+		height: auto;
+	}
+
+	[data-page-type="landing"] .theme-light-only {
+		display: none;
+	}
+
+	:root[data-theme='light'] [data-page-type="landing"] .theme-light-only {
+		display: block;
+	}
+
+	:root[data-theme='light'] [data-page-type="landing"] .theme-dark-only {
+		display: none;
+	}
+
+	[data-page-type="landing"] .screenshot-card .caption a {
+		color: var(--sl-color-text-accent);
+		font-weight: 600;
+	}
+
+	/* Learn highlight */
+	[data-page-type="landing"] .learn-highlight {
+		display: grid;
+		grid-template-columns: 2fr 3fr;
+		gap: 3rem;
+		align-items: center;
+		max-width: 72rem;
+		margin: 0 auto;
+		padding: 4rem 1.5rem;
+	}
+
+	[data-page-type="landing"] .learn-highlight h2 {
+		font-size: var(--sl-text-3xl);
+		font-weight: 700;
+		margin: 0 0 1rem;
+	}
+
+	[data-page-type="landing"] .learn-highlight p,
+	[data-page-type="landing"] .learn-highlight li {
+		color: var(--sl-color-gray-2);
+		line-height: 1.6;
+	}
+
+	[data-page-type="landing"] .learn-highlight ul {
+		margin: 1rem 0 1.5rem;
+		padding-left: 1.25rem;
+	}
+
+	[data-page-type="landing"] .learn-link {
+		font-weight: 600;
+		color: var(--sl-color-text-accent);
+	}
+
+	[data-page-type="landing"] .cta code,
+	[data-page-type="landing"] .feature-card code,
+	[data-page-type="landing"] .hero-meta code {
+		font-size: 0.9em;
+	}
+
+	@media (max-width: 50rem) {
+		[data-page-type="landing"] .emulator-grid {
+			grid-template-columns: 1fr;
+		}
+
+		[data-page-type="landing"] .learn-highlight {
+			grid-template-columns: 1fr;
+			padding: 2rem 1rem;
+		}
+	}
+
+	/* Override Starlight's 45rem content cap on the landing page */
+	.content-panel:has([data-page-type="landing"]) .sl-container {
 		max-width: 100%;
 	}
 
 	/* Hide Starlight's default page title on the landing page */
-	[data-has-hero] .content-panel:first-child {
+	.main-pane:has([data-page-type="landing"]) .content-panel:first-child {
 		display: none;
 	}
-}
+
+	/* Starlight spaces markdown siblings with margin-top; grids handle their own gaps */
+	[data-page-type="landing"] :is(.features-grid, .emulator-grid, .screenshot-grid, .hero, .learn-highlight, .hero-actions, .cta-actions) > * {
+		margin-top: 0;
+	}
+
+	[data-page-type="landing"] .hero-actions a,
+	[data-page-type="landing"] .cta-actions a {
+		text-decoration: none;
+	}

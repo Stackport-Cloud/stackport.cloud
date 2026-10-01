@@ -1,0 +1,62 @@
+---
+/**
+ * Side-by-side quick start, one card per emulator.
+ *
+ * Every card has the same shape on purpose: start the emulator, then start
+ * StackPort against it. Order is fixed (MiniStack, Floci, LocalStack, Moto),
+ * per CONTRIBUTING.md#supported-emulators in the StackPort repository.
+ */
+interface Emulator {
+	name: string;
+	guide: string;
+	image: string;
+	port: string;
+	/** Extra `docker run` flags the emulator needs to start. */
+	flags?: string;
+}
+
+const emulators: Emulator[] = [
+	{ name: 'MiniStack', guide: '/docs/guides/ministack/', image: 'ministackorg/ministack', port: '4566' },
+	{ name: 'Floci', guide: '/docs/guides/floci/', image: 'floci/floci', port: '4566' },
+	{
+		name: 'LocalStack',
+		guide: '/docs/guides/localstack/',
+		image: 'localstack/localstack',
+		port: '4566',
+		flags: '-e LOCALSTACK_AUTH_TOKEN=<your-token>',
+	},
+	{ name: 'Moto', guide: '/docs/guides/moto/', image: 'motoserver/moto', port: '5000' },
+];
+
+const escape = (text: string) =>
+	text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+const lines = (e: Emulator) => [
+	{ cls: 'comment', text: `# start ${e.name}` },
+	{ cls: 'command', text: `docker run -d -p ${e.port}:${e.port} ${e.flags ? `${e.flags} ` : ''}${e.image}` },
+	{ cls: 'blank', text: '' },
+	{ cls: 'comment', text: '# start StackPort' },
+	{ cls: 'command', text: 'pip install stackport' },
+	{ cls: 'command', text: `AWS_ENDPOINT_URL=http://localhost:${e.port} \\` },
+	{ cls: 'command', text: '  AWS_ACCESS_KEY_ID=test AWS_SECRET_ACCESS_KEY=test stackport' },
+];
+
+const code = (e: Emulator) =>
+	lines(e)
+		.map((l) => `<span class="${l.cls}">${escape(l.text)}</span>`)
+		.join('\n');
+---
+
+<div class="emulator-grid">
+	{
+		emulators.map((e) => (
+			<div class="emulator-card">
+				<div class="emulator-card-header">
+					<h3>{e.name}</h3>
+					<a href={e.guide}>Guide</a>
+				</div>
+				<pre class="quickstart-code" set:html={code(e)} />
+			</div>
+		))
+	}
+</div>

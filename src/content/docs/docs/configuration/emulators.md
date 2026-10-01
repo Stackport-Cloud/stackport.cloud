@@ -1,80 +1,47 @@
 ---
-title: Emulator Setup
-description: Configure StackPort with LocalStack, MiniStack, Moto, or real AWS.
+title: Emulators
+description: StackPort works with MiniStack, Floci, LocalStack, Moto and any other AWS-compatible endpoint. How to connect each one.
 ---
 
-StackPort works with any service that speaks the AWS API. Here's how to connect each one.
+StackPort only speaks the standard AWS API, so any emulator that implements it can sit behind StackPort. There is nothing emulator-specific to install or enable. You set one URL and StackPort probes every service it knows about; services an emulator does not implement simply show as unavailable on the dashboard.
 
-## MiniStack
+The emulators below are documented side by side in a fixed order. MiniStack is listed first because StackPort grew out of a MiniStack pull request, not because it is preferred.
 
-[MiniStack](https://github.com/MiniStackOrg/ministack) is a lightweight AWS emulator. It's the recommended pairing with StackPort.
+| Emulator | Default endpoint | One-line start | Guide |
+|---|---|---|---|
+| [MiniStack](https://github.com/ministackorg/ministack) | `http://localhost:4566` | `docker run -d -p 4566:4566 ministackorg/ministack` | [Using StackPort with MiniStack](/docs/guides/ministack/) |
+| [Floci](https://github.com/floci-io/floci) | `http://localhost:4566` | `docker run -d -p 4566:4566 floci/floci` | [Using StackPort with Floci](/docs/guides/floci/) |
+| [LocalStack](https://docs.localstack.cloud) | `http://localhost:4566` | `docker run -d -p 4566:4566 -e LOCALSTACK_AUTH_TOKEN=<your-token> localstack/localstack` | [Using StackPort with LocalStack](/docs/guides/localstack/) |
+| [Moto](https://github.com/getmoto/moto) | `http://localhost:5000` | `docker run -d -p 5000:5000 motoserver/moto` | [Using StackPort with Moto](/docs/guides/moto/) |
 
-```bash
-pip install ministack stackport
-ministack &
-stackport
-```
+LocalStack needs a LocalStack account and an auth token to start. Its guide covers where to get one.
 
-Or with Docker:
-
-```bash
-docker compose up -d  # using the example docker-compose.yml
-```
-
-Default endpoint: `http://localhost:4566`
-
-## LocalStack
-
-[LocalStack](https://localstack.cloud) is the most popular AWS emulator with broad service coverage.
+With the emulator running, start StackPort against it:
 
 ```bash
-AWS_ENDPOINT_URL=http://localhost:4566 stackport
+AWS_ENDPOINT_URL=http://localhost:4566 stackport   # MiniStack, Floci, LocalStack
+AWS_ENDPOINT_URL=http://localhost:5000 stackport   # Moto
 ```
 
-Or in Docker Compose, set `AWS_ENDPOINT_URL=http://localstack:4566`.
+Each guide follows the same structure: setup, a Compose file, what works, and tips specific to that emulator.
 
-## Moto
+## Other AWS-compatible endpoints
 
-[Moto](https://github.com/getmoto/moto) can run as a standalone server:
+Anything that answers the AWS API works the same way. Two common cases:
 
-```bash
-pip install moto[server]
-moto_server -p 5000 &
-AWS_ENDPOINT_URL=http://localhost:5000 stackport
-```
+- **S3-compatible storage** such as MinIO: `AWS_ENDPOINT_URL=http://localhost:9000 stackport`. Only S3 will report as available.
+- **DynamoDB Local**: `AWS_ENDPOINT_URL=http://localhost:8000 stackport`. Only DynamoDB will report as available.
 
-## MinIO (S3-only)
-
-[MinIO](https://min.io) provides S3-compatible storage:
-
-```bash
-AWS_ENDPOINT_URL=http://localhost:9000 stackport
-```
-
-Only S3 resources will be available.
+For single-service endpoints like these, set `STACKPORT_SERVICES` to just that service so the dashboard does not probe the rest. See [Browse local S3 and DynamoDB](/docs/guides/local-s3-dynamodb/).
 
 ## Real AWS
 
-Omit `AWS_ENDPOINT_URL` to connect to real AWS using your credential chain:
+Leave `AWS_ENDPOINT_URL` unset and StackPort uses real AWS through your credential chain. See [Real AWS and Read-only Mode](/docs/configuration/real-aws/).
 
-```bash
-# Using a named profile
-AWS_PROFILE=my-profile stackport
+## Several at once
 
-# Using explicit credentials
-AWS_ACCESS_KEY_ID=AKIA... AWS_SECRET_ACCESS_KEY=... AWS_REGION=us-west-2 stackport
+You can register every emulator and account you work with and switch between them from the top bar. See [Multiple Endpoints and Authentication](/docs/configuration/endpoints/).
 
-# Read-only mode (recommended for real accounts)
-STACKPORT_ALLOW_WRITES=false AWS_PROFILE=production stackport
-```
+## Something works worse on your emulator?
 
-## Multiple Endpoints
-
-Connect to several environments simultaneously:
-
-```bash
-STACKPORT_ENDPOINTS="local=http://localhost:4566,staging=http://staging.internal:4566,prod=" \
-  AWS_PROFILE=prod stackport
-```
-
-The UI will show an endpoint selector to switch between environments.
+If a view behaves differently on one emulator than on the others, please [open an issue](https://github.com/DaviReisVieira/stackport/issues). Closing that kind of gap is exactly what the project wants to do, and pull requests that improve support for any emulator are very welcome.

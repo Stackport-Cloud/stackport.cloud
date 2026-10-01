@@ -1,30 +1,39 @@
 ---
 title: SQS Browser
-description: Browse SQS queues, send and receive messages, and manage queue operations.
+description: Manage SQS queues in a web UI. Create Standard or FIFO queues with a dead-letter queue, send single or batch messages, poll, delete, purge, and keep saved messages for testing.
 ---
 
-The SQS browser provides full queue management with message-level operations.
+The SQS view covers the whole life of a queue, from creating it to replaying test messages into it.
 
-## Features
+<picture>
+  <source srcset="/images/sqs.webp" type="image/webp" />
+  <img src="/images/sqs.png" alt="StackPort SQS browser showing queues and message counts" width="4800" height="3000" loading="lazy" decoding="async" />
+</picture>
 
-- **Queue list** with depth badges and queue type indicators (Standard/FIFO)
-- **Message browser** with JSON support
-- **Send messages** with custom body and attributes
-- **Receive messages** with visibility timeout control
-- **Delete messages** individually
-- **Purge queues** to clear all messages
-- **Batch send** multiple messages at once
-- **Queue attributes** — ARN, visibility timeout, retention period
-- **Tagging** support
+## Queues
 
-## Write Operations
+The queue list shows each queue's type, available, in-flight and delayed message counts, visibility timeout and dead-letter queue. Star a queue to mark it as a favorite. Select a queue to act on it from the toolbar, or use `j`, `k` and `Enter` to move and open.
 
-| Operation | Description |
-|---|---|
-| Send message | Custom body, message attributes, delay |
-| Receive | Fetch messages with configurable visibility timeout |
-| Delete | Remove individual messages |
-| Purge | Clear all messages from a queue |
-| Batch send | Send multiple messages in one operation |
-| Create queue | Create new Standard or FIFO queues |
-| Delete queue | Remove a queue entirely |
+**Create queue** supports Standard and FIFO (the `.fifo` suffix is added for you), content-based deduplication, visibility timeout, retention, delay, maximum message size, receive wait time and encryption with SSE-SQS or a KMS key. Tick **Create a dead-letter queue** to create `<name>-dlq` alongside it with the max receive count you choose.
+
+## Messages
+
+- **Send message**: body and delay for Standard queues, group ID and deduplication ID for FIFO.
+- **Send batch**: a JSON array of up to 10 messages, each with an optional delay, group ID and deduplication ID.
+- **Poll for messages** peeks at up to 10 messages without hiding them from other consumers. Open one to see its body, MD5, receipt handle, and system and message attributes.
+- **Delete** a message, or **Delete selected** for several.
+
+### Saved messages
+
+Keep messages you send often as **saved messages** on the queue: write one from scratch, star a message you polled, or save a selection. From there you can view, edit, copy and send them again. They are stored in your browser.
+
+## Queue settings
+
+- **Configuration** shows the ARN, URL, type, timeouts, retention, delay, maximum size, deduplication and dead-letter settings.
+- **Edit** changes the queue attributes and sets or clears the redrive policy.
+- **Tags** has an editor.
+- **Purge** and **Delete queue** ask you to type the queue name to confirm.
+
+## Links
+
+Deep link to a queue with `?queue=orders`.

@@ -1,156 +1,288 @@
 ---
-title: StackPort — Universal AWS Resource Browser
-description: Open-source AWS resource browser for LocalStack, MiniStack, Moto, and real AWS. Browse 35 services, invoke Lambda, manage S3, query DynamoDB, and more.
+title: 'StackPort: open-source web console for AWS emulators'
+description: StackPort is a free, open-source web console for MiniStack, Floci, LocalStack, Moto and real AWS. Browse 35 services, use 13 dedicated views, and learn AWS with guided lessons. One Docker image.
 template: splash
+head:
+  - tag: title
+    content: 'StackPort: open-source web console for AWS emulators'
+  - tag: meta
+    attrs:
+      property: og:type
+      content: website
+  - tag: script
+    attrs:
+      type: application/ld+json
+    content: |
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://stackport.cloud/#website",
+            "url": "https://stackport.cloud/",
+            "name": "StackPort",
+            "inLanguage": "en"
+          },
+          {
+            "@type": "SoftwareApplication",
+            "@id": "https://stackport.cloud/#software",
+            "name": "StackPort",
+            "description": "Open-source web console for local AWS emulators (MiniStack, Floci, LocalStack, Moto) and real AWS accounts. Browse, inspect, and manage resources across 35 AWS services.",
+            "url": "https://stackport.cloud/",
+            "applicationCategory": "DeveloperApplication",
+            "applicationSubCategory": "AWS resource browser",
+            "operatingSystem": "Linux, macOS, Windows (Docker or Python 3.10+)",
+            "isAccessibleForFree": true,
+            "license": "https://opensource.org/licenses/MIT",
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "downloadUrl": "https://pypi.org/project/stackport/",
+            "installUrl": "https://stackport.cloud/docs/installation/",
+            "softwareHelp": { "@type": "CreativeWork", "url": "https://stackport.cloud/docs/introduction/" },
+            "screenshot": "https://stackport.cloud/images/dashboard.png",
+            "sameAs": [
+              "https://github.com/DaviReisVieira/stackport",
+              "https://pypi.org/project/stackport/",
+              "https://hub.docker.com/r/davireis/stackport"
+            ]
+          },
+          {
+            "@type": "SoftwareSourceCode",
+            "@id": "https://stackport.cloud/#source",
+            "name": "StackPort source code",
+            "codeRepository": "https://github.com/DaviReisVieira/stackport",
+            "programmingLanguage": ["Python", "TypeScript"],
+            "runtimePlatform": "Python 3.10+",
+            "license": "https://opensource.org/licenses/MIT",
+            "targetProduct": { "@id": "https://stackport.cloud/#software" }
+          }
+        ]
+      }
 ---
 
-import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
+import EmulatorQuickstart from '../../components/EmulatorQuickstart.astro';
 
 <div data-page-type="landing">
 
 <section class="hero">
   <div class="hero-content">
-    <h1>See everything running in your AWS emulator</h1>
+    <h1>A web console for your AWS emulator</h1>
     <p class="tagline">
-      StackPort is an open-source resource browser that connects to <strong>LocalStack</strong>, <strong>MiniStack</strong>, <strong>Moto</strong>, or <strong>real AWS</strong>. Browse 35 services, invoke Lambda functions, manage S3 objects, send SQS messages — all from a single UI.
+      StackPort shows you what is running in <strong>MiniStack</strong>, <strong>Floci</strong>, <strong>LocalStack</strong>, <strong>Moto</strong> or a real AWS account. Browse 35 services, work in dedicated views for S3, DynamoDB, Lambda, SQS and nine more, and learn AWS hands-on with guided lessons.
     </p>
     <div class="hero-actions">
-      <a href="/docs/quickstart/" class="primary">Get Started</a>
-      <a href="https://github.com/DaviReisVieira/stackport" class="secondary">GitHub</a>
+      <a href="/docs/quickstart/" class="primary">Get started</a>
+      <a href="https://github.com/DaviReisVieira/stackport" class="secondary star"><svg aria-hidden="true" viewBox="0 0 16 16" width="16" height="16"><path fill="currentColor" d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z"/></svg> Star on GitHub</a>
     </div>
+    <p class="hero-meta">Open source, MIT licensed. <code>pip install stackport</code> or <code>docker run davireis/stackport</code>.</p>
   </div>
   <div class="hero-image">
-    <img src="/images/dashboard.jpeg" alt="StackPort dashboard showing AWS services overview" />
+    <video autoplay muted loop playsinline preload="metadata" poster="/images/dashboard.webp" aria-label="A short walkthrough of the StackPort console">
+      <source src="/images/demo.mp4" type="video/mp4" />
+      <img src="/images/demo.gif" alt="A short walkthrough of the StackPort console" />
+    </video>
   </div>
 </section>
 
 <section class="quickstart" id="quickstart">
-  <h2>Up and running in seconds</h2>
-  <p class="subtitle">One command to start browsing your AWS resources</p>
+  <h2>Up and running in a minute</h2>
+  <p class="subtitle">Start the emulator you use, then point StackPort at it. Open <strong>http://localhost:8080</strong>.</p>
 
-  <div class="quickstart-code">
-    <pre><span class="comment"># With Docker Compose (includes MiniStack emulator)</span>{'\n'}<span class="command">curl -O https://raw.githubusercontent.com/DaviReisVieira/stackport/main/examples/docker-compose.yml</span>{'\n'}<span class="command">docker compose up -d</span>{'\n'}{'\n'}<span class="comment"># Or install directly with pip</span>{'\n'}<span class="command">pip install stackport</span>{'\n'}<span class="command">stackport</span>{'\n'}{'\n'}<span class="comment"># Open http://localhost:8080</span></pre>
-  </div>
+  <EmulatorQuickstart />
+
+  <p class="quickstart-footer">
+    Prefer Docker Compose? Each guide has a file that runs the emulator and StackPort together, with a seed that creates demo resources.
+    Already have an emulator running elsewhere? <a href="/docs/configuration/emulators/">Any AWS-compatible endpoint works.</a>
+  </p>
 </section>
 
 <section class="features">
-  <h2>Built for local development</h2>
-  <p class="subtitle">Everything you need to understand what's running in your AWS environment</p>
+  <h2>What you get</h2>
+  <p class="subtitle">Everything runs locally, talks the standard AWS API, and needs no setup inside your emulator</p>
 
   <div class="features-grid">
     <div class="feature-card">
-      <div class="icon">🔍</div>
-      <h3>35 AWS Services</h3>
-      <p>Browse resources across S3, DynamoDB, Lambda, SQS, EC2, IAM, and 29 more services with a unified interface.</p>
+      <div class="icon">📊</div>
+      <h3>35 services, one dashboard</h3>
+      <p>Every service probed in parallel, with resource counts that update live over a WebSocket. Star the ones you use and they move to the top.</p>
     </div>
     <div class="feature-card">
-      <div class="icon">🎯</div>
-      <h3>8 Custom Browsers</h3>
-      <p>Dedicated UIs for S3, DynamoDB, Lambda, SQS, EC2, IAM, CloudWatch Logs, and Secrets Manager with service-specific interactions.</p>
+      <div class="icon">🧭</div>
+      <h3>13 dedicated views</h3>
+      <p>S3, DynamoDB, Lambda, SQS, SNS, EC2, IAM, RDS, KMS, Step Functions, CloudWatch Logs and Metrics, and Secrets Manager. Everything else gets a searchable table with JSON details.</p>
     </div>
     <div class="feature-card">
-      <div class="icon">⚡</div>
-      <h3>Write Operations</h3>
-      <p>Invoke Lambda functions, send SQS messages, upload S3 objects, start/stop EC2 instances, and query DynamoDB tables.</p>
+      <div class="icon">🎓</div>
+      <h3>Guided lessons</h3>
+      <p>Learn AWS hands-on without an AWS account or a bill. Lessons run inside the console and check your real resources, so a step turns green when the thing exists.</p>
     </div>
     <div class="feature-card">
-      <div class="icon">🐳</div>
-      <h3>Single Docker Image</h3>
-      <p>One container, no configuration. Works with Docker Compose alongside your emulator of choice.</p>
+      <div class="icon">✏️</div>
+      <h3>Make changes, not just look</h3>
+      <p>Upload to S3, edit DynamoDB items, send SQS messages, publish to SNS, invoke Lambda, start Step Functions executions, tail logs live.</p>
     </div>
     <div class="feature-card">
-      <div class="icon">🔌</div>
-      <h3>Any AWS Endpoint</h3>
-      <p>Connect to LocalStack, MiniStack, Moto, MinIO, or real AWS accounts. Supports multiple endpoints simultaneously.</p>
+      <div class="icon">🔒</div>
+      <h3>Real AWS, read-only when you want</h3>
+      <p>Browse an account through your profile, SSO or keys. Set <code>STACKPORT_ALLOW_WRITES=false</code> and the server refuses every write.</p>
     </div>
     <div class="feature-card">
-      <div class="icon">📡</div>
-      <h3>Real-time Dashboard</h3>
-      <p>WebSocket-powered live updates show service health and resource counts as they change.</p>
+      <div class="icon">🔀</div>
+      <h3>Many endpoints at once</h3>
+      <p>Register emulators and accounts side by side, each with its own region and credentials, and switch from the top bar.</p>
     </div>
     <div class="feature-card">
       <div class="icon">💻</div>
-      <h3>CLI Included</h3>
-      <p>Use `stackport status`, `list`, `describe`, and `export` for scripting and CI pipelines.</p>
+      <h3>A CLI for scripts and CI</h3>
+      <p><code>stackport status</code>, <code>list</code>, <code>describe</code> and <code>export</code> with table, JSON or CSV output. A VS Code extension is in early development.</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">🐳</div>
+      <h3>One Docker image</h3>
+      <p>UI and API in a single container for amd64 and arm64, or a plain <code>pip install</code>. Configured entirely with environment variables.</p>
     </div>
     <div class="feature-card">
       <div class="icon">⌨️</div>
-      <h3>Keyboard First</h3>
-      <p>16 keyboard shortcuts for fast navigation. Press `?` to view them all.</p>
+      <h3>Built for daily use</h3>
+      <p>Keyboard shortcuts, deep links to any resource, JSON and CSV export, and light and dark themes. Press <code>?</code> to see the shortcuts.</p>
     </div>
-    <div class="feature-card">
-      <div class="icon">📦</div>
-      <h3>Export Anywhere</h3>
-      <p>Export resources as JSON or CSV. Copy to clipboard, download files, or pipe CLI output to other tools.</p>
+  </div>
+</section>
+
+<section class="screenshots">
+  <h2>See it in action</h2>
+  <p class="subtitle">Views built around how you actually use each service</p>
+
+  <div class="screenshot-wide">
+    <div class="screenshot-card">
+      <picture class="theme-dark-only">
+        <source srcset="/images/dashboard.webp" type="image/webp" />
+        <img src="/images/dashboard.png" alt="StackPort dashboard with every AWS service and its resource counts" width="4800" height="3000" loading="lazy" decoding="async" />
+      </picture>
+      <picture class="theme-light-only">
+        <source srcset="/images/dashboard-light.webp" type="image/webp" />
+        <img src="/images/dashboard-light.png" alt="StackPort dashboard in the light theme" width="4800" height="3000" loading="lazy" decoding="async" />
+      </picture>
+      <div class="caption">Dashboard: every service with live resource counts</div>
     </div>
+  </div>
+
+  <div class="screenshot-grid">
+    <div class="screenshot-card">
+      <picture>
+        <source srcset="/images/s3.webp" type="image/webp" />
+        <img src="/images/s3.png" alt="S3 browser with folders, objects and upload" width="4800" height="3000" loading="lazy" decoding="async" />
+      </picture>
+      <div class="caption"><a href="/docs/services/s3/">S3</a>: folders, drag and drop upload, bucket settings</div>
+    </div>
+    <div class="screenshot-card">
+      <picture>
+        <source srcset="/images/dynamodb.webp" type="image/webp" />
+        <img src="/images/dynamodb.png" alt="DynamoDB browser showing table items" width="4800" height="3000" loading="lazy" decoding="async" />
+      </picture>
+      <div class="caption"><a href="/docs/services/dynamodb/">DynamoDB</a>: scan, query and edit items as JSON</div>
+    </div>
+    <div class="screenshot-card">
+      <picture>
+        <source srcset="/images/lambda.webp" type="image/webp" />
+        <img src="/images/lambda.png" alt="Lambda browser showing function configuration" width="4800" height="3000" loading="lazy" decoding="async" />
+      </picture>
+      <div class="caption"><a href="/docs/services/lambda/">Lambda</a>: configuration, invoke with event templates</div>
+    </div>
+    <div class="screenshot-card">
+      <picture>
+        <source srcset="/images/sqs.webp" type="image/webp" />
+        <img src="/images/sqs.png" alt="SQS browser with queues and message counts" width="4800" height="3000" loading="lazy" decoding="async" />
+      </picture>
+      <div class="caption"><a href="/docs/services/sqs/">SQS</a>: send, poll, purge and saved messages</div>
+    </div>
+    <div class="screenshot-card">
+      <picture>
+        <source srcset="/images/stepfunctions.webp" type="image/webp" />
+        <img src="/images/stepfunctions.png" alt="Step Functions graph with an execution path" width="4800" height="3000" loading="lazy" decoding="async" />
+      </picture>
+      <div class="caption"><a href="/docs/services/step-functions/">Step Functions</a>: state machine graph and execution path</div>
+    </div>
+    <div class="screenshot-card">
+      <picture>
+        <source srcset="/images/kms.webp" type="image/webp" />
+        <img src="/images/kms.png" alt="KMS browser showing a key with its policy" width="4800" height="3000" loading="lazy" decoding="async" />
+      </picture>
+      <div class="caption"><a href="/docs/services/kms/">KMS</a>: keys, policies, grants and aliases</div>
+    </div>
+  </div>
+</section>
+
+<section class="learn-highlight">
+  <div class="learn-text">
+    <h2>Learn AWS without an AWS account</h2>
+    <p>
+      Guided lessons run inside StackPort against your own emulator, so there is no account to create and no bill to worry about. A panel walks you through each step while markers point at the real controls.
+    </p>
+    <ul>
+      <li>Do each step in the console or with the AWS CLI, with commands already filled in.</li>
+      <li>StackPort checks the live state, so a step turns green when the resource really exists.</li>
+      <li>Skip anything, come back later. Nothing is a gate.</li>
+    </ul>
+    <a href="/docs/learn/guided-lessons/" class="learn-link">How guided lessons work</a>
+  </div>
+  <div class="screenshot-card">
+    <picture>
+      <source srcset="/images/learn.webp" type="image/webp" />
+      <img src="/images/learn.png" alt="A guided lesson in the Learn panel next to the S3 view" width="4800" height="3000" loading="lazy" decoding="async" />
+    </picture>
   </div>
 </section>
 
 <section class="services">
-  <h2>35 AWS Services</h2>
-  <p class="subtitle">Custom browsers highlighted — all others get a searchable resource table</p>
+  <h2>35 AWS services</h2>
+  <p class="subtitle">Dedicated views highlighted. Every other service gets a searchable resource table.</p>
 
   <div class="service-badges">
     <span class="service-badge custom">S3</span>
     <span class="service-badge custom">DynamoDB</span>
     <span class="service-badge custom">Lambda</span>
     <span class="service-badge custom">SQS</span>
+    <span class="service-badge custom">SNS</span>
     <span class="service-badge custom">EC2</span>
     <span class="service-badge custom">IAM</span>
+    <span class="service-badge custom">RDS</span>
+    <span class="service-badge custom">KMS</span>
+    <span class="service-badge custom">Step Functions</span>
     <span class="service-badge custom">CloudWatch Logs</span>
+    <span class="service-badge custom">CloudWatch Metrics</span>
     <span class="service-badge custom">Secrets Manager</span>
-    <span class="service-badge">SNS</span>
-    <span class="service-badge">SSM</span>
-    <span class="service-badge">Kinesis</span>
-    <span class="service-badge">EventBridge</span>
-    <span class="service-badge">Route 53</span>
-    <span class="service-badge">KMS</span>
-    <span class="service-badge">CloudFormation</span>
-    <span class="service-badge">Step Functions</span>
-    <span class="service-badge">RDS</span>
-    <span class="service-badge">ECS</span>
-    <span class="service-badge">CloudWatch Monitoring</span>
-    <span class="service-badge">SES</span>
     <span class="service-badge">ACM</span>
-    <span class="service-badge">WAFv2</span>
-    <span class="service-badge">ECR</span>
-    <span class="service-badge">ElastiCache</span>
-    <span class="service-badge">Glue</span>
-    <span class="service-badge">Athena</span>
     <span class="service-badge">API Gateway</span>
-    <span class="service-badge">Firehose</span>
-    <span class="service-badge">Cognito</span>
-    <span class="service-badge">EMR</span>
-    <span class="service-badge">ELB</span>
-    <span class="service-badge">EFS</span>
-    <span class="service-badge">CloudFront</span>
     <span class="service-badge">AppSync</span>
-    <span class="service-badge">STS</span>
-  </div>
-</section>
-
-<section class="screenshots">
-  <h2>See it in action</h2>
-  <p class="subtitle">Dedicated browsers for the services you use most</p>
-
-  <div class="screenshot-grid">
-    <div class="screenshot-card">
-      <img src="/images/lambda.jpeg" alt="Lambda browser showing function details and invocation panel" />
-      <div class="caption">Lambda Browser — invoke functions, view configs, manage aliases</div>
-    </div>
-    <div class="screenshot-card">
-      <img src="/images/s3.jpeg" alt="S3 browser with file upload and folder navigation" />
-      <div class="caption">S3 Browser — upload files, navigate folders, manage objects</div>
-    </div>
+    <span class="service-badge">Athena</span>
+    <span class="service-badge">CloudFormation</span>
+    <span class="service-badge">CloudFront</span>
+    <span class="service-badge">Cognito User Pools</span>
+    <span class="service-badge">Cognito Identity</span>
+    <span class="service-badge">ECR</span>
+    <span class="service-badge">ECS</span>
+    <span class="service-badge">EFS</span>
+    <span class="service-badge">ElastiCache</span>
+    <span class="service-badge">Elastic Load Balancing</span>
+    <span class="service-badge">EMR</span>
+    <span class="service-badge">EventBridge</span>
+    <span class="service-badge">Firehose</span>
+    <span class="service-badge">Glue</span>
+    <span class="service-badge">Kinesis</span>
+    <span class="service-badge">Route 53</span>
+    <span class="service-badge">SES</span>
+    <span class="service-badge">SSM Parameter Store</span>
+    <span class="service-badge">WAFv2</span>
   </div>
 </section>
 
 <section class="cta">
-  <h2>Start browsing your AWS resources</h2>
-  <p>Open source, free forever. One container to see everything.</p>
+  <h2>Give it a try</h2>
+  <p>StackPort is free and open source, built in the open with the emulator community. If it saves you a few <code>aws --endpoint-url</code> commands, a star on GitHub helps other people find it.</p>
   <div class="cta-actions">
-    <a href="/docs/quickstart/" class="primary">Read the Docs</a>
-    <a href="https://github.com/DaviReisVieira/stackport" class="secondary">Star on GitHub</a>
+    <a href="https://github.com/DaviReisVieira/stackport" class="primary star"><svg aria-hidden="true" viewBox="0 0 16 16" width="16" height="16"><path fill="currentColor" d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z"/></svg> Star on GitHub</a>
+    <a href="/docs/quickstart/" class="secondary">Read the docs</a>
+    <a href="https://github.com/DaviReisVieira/stackport/issues" class="secondary">Report an issue</a>
   </div>
 </section>
 
