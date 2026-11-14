@@ -1,6 +1,23 @@
 ---
 title: SQS Browser
 description: Manage SQS queues in a web UI. Create Standard or FIFO queues with a dead-letter queue, send single or batch messages, poll, delete, purge, and keep saved messages for testing.
+head:
+  - tag: meta
+    attrs:
+      property: og:image
+      content: https://stackport.cloud/images/og/sqs.png
+  - tag: meta
+    attrs:
+      property: og:image:alt
+      content: 'The StackPort SQS browser showing queues and message counts'
+  - tag: meta
+    attrs:
+      name: twitter:image
+      content: https://stackport.cloud/images/og/sqs.png
+  - tag: meta
+    attrs:
+      name: twitter:image:alt
+      content: 'The StackPort SQS browser showing queues and message counts'
 ---
 
 The SQS view covers the whole life of a queue, from creating it to replaying test messages into it.

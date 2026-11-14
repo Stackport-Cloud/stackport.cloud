@@ -1,10 +1,10 @@
 ---
-title: 'StackPort: open-source web console for AWS emulators'
-description: StackPort is a free, open-source web console for MiniStack, Floci, LocalStack, Moto and real AWS. Browse 35 services, use 13 dedicated views, and learn AWS with guided lessons. One Docker image.
+title: 'StackPort: open-source web UI and console for AWS emulators'
+description: Free, open-source web UI for AWS Emulator, MiniStack, Floci, LocalStack, Moto and real AWS. Browse 51 services, call any AWS API, and learn AWS hands-on.
 template: splash
 head:
   - tag: title
-    content: 'StackPort: open-source web console for AWS emulators'
+    content: 'StackPort: open-source web UI and console for AWS emulators'
   - tag: meta
     attrs:
       property: og:type
@@ -27,18 +27,30 @@ head:
             "@type": "SoftwareApplication",
             "@id": "https://stackport.cloud/#software",
             "name": "StackPort",
-            "description": "Open-source web console for local AWS emulators (MiniStack, Floci, LocalStack, Moto) and real AWS accounts. Browse, inspect, and manage resources across 35 AWS services.",
+            "description": "Free, open-source web UI and console for local AWS emulators (AWS Emulator, MiniStack, Floci, LocalStack, Moto) and real AWS accounts. Browse, inspect and manage resources across 51 AWS services, and call any AWS API operation from the API Explorer.",
             "url": "https://stackport.cloud/",
             "applicationCategory": "DeveloperApplication",
-            "applicationSubCategory": "AWS resource browser",
-            "operatingSystem": "Linux, macOS, Windows (Docker or Python 3.10+)",
+            "applicationSubCategory": "Web console for AWS emulators",
+            "operatingSystem": "Linux, macOS, Windows",
+            "softwareRequirements": "Python 3.10 or newer, or Docker",
+            "softwareVersion": "0.4.10",
+            "releaseNotes": "https://github.com/DaviReisVieira/stackport/releases/tag/v0.4.10",
             "isAccessibleForFree": true,
             "license": "https://opensource.org/licenses/MIT",
             "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-            "downloadUrl": "https://pypi.org/project/stackport/",
+            "downloadUrl": ["https://pypi.org/project/stackport/", "https://hub.docker.com/r/davireis/stackport"],
             "installUrl": "https://stackport.cloud/docs/installation/",
             "softwareHelp": { "@type": "CreativeWork", "url": "https://stackport.cloud/docs/introduction/" },
             "screenshot": "https://stackport.cloud/images/dashboard.png",
+            "featureList": [
+              "Web UI for AWS Emulator, MiniStack, Floci, LocalStack, Moto and any AWS-compatible endpoint",
+              "Dashboard of 51 AWS services with live resource counts",
+              "Dedicated views for S3, DynamoDB, Lambda, SQS, SNS, EC2, IAM, RDS, KMS, Step Functions, CloudWatch Logs, CloudWatch metrics and Secrets Manager",
+              "API Explorer that calls any operation of any service boto3 knows",
+              "Guided lessons that check real resource state",
+              "Real AWS accounts with an optional read-only mode",
+              "CLI for status, list, describe and export"
+            ],
             "sameAs": [
               "https://github.com/DaviReisVieira/stackport",
               "https://pypi.org/project/stackport/",
@@ -60,6 +72,7 @@ head:
 ---
 
 import EmulatorQuickstart from '../../components/EmulatorQuickstart.astro';
+import Faq from '../../components/Faq.astro';
 
 <div data-page-type="landing">
 
@@ -67,13 +80,13 @@ import EmulatorQuickstart from '../../components/EmulatorQuickstart.astro';
   <div class="hero-content">
     <h1>A web console for your AWS emulator</h1>
     <p class="tagline">
-      StackPort shows you what is running in <strong>MiniStack</strong>, <strong>Floci</strong>, <strong>LocalStack</strong>, <strong>Moto</strong> or a real AWS account. Browse 35 services, work in dedicated views for S3, DynamoDB, Lambda, SQS and nine more, and learn AWS hands-on with guided lessons.
+      StackPort shows you what is running in <strong>AWS Emulator</strong>, <strong>MiniStack</strong>, <strong>Floci</strong>, <strong>LocalStack</strong>, <strong>Moto</strong> or a real AWS account. Browse 51 services, work in dedicated views for S3, DynamoDB, Lambda, SQS and nine more, call any AWS API from the API Explorer, and learn AWS hands-on with guided lessons.
     </p>
     <div class="hero-actions">
       <a href="/docs/quickstart/" class="primary">Get started</a>
       <a href="https://github.com/DaviReisVieira/stackport" class="secondary star"><svg aria-hidden="true" viewBox="0 0 16 16" width="16" height="16"><path fill="currentColor" d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z"/></svg> Star on GitHub</a>
     </div>
-    <p class="hero-meta">Open source, MIT licensed. <code>pip install stackport</code> or <code>docker run davireis/stackport</code>.</p>
+    <p class="hero-meta">Free and open source, MIT licensed. <code>pip install stackport</code> or <code>docker run davireis/stackport</code>.</p>
   </div>
   <div class="hero-image">
     <video autoplay muted loop playsinline preload="metadata" poster="/images/dashboard.webp" aria-label="A short walkthrough of the StackPort console">
@@ -90,7 +103,11 @@ import EmulatorQuickstart from '../../components/EmulatorQuickstart.astro';
   <EmulatorQuickstart />
 
   <p class="quickstart-footer">
-    Prefer Docker Compose? Each guide has a file that runs the emulator and StackPort together, with a seed that creates demo resources.
+    Every emulator gets the same console, over the standard AWS API, with nothing to install inside it.
+    StackPort began as a web UI pull request to <a href="/docs/guides/ministack/">MiniStack</a>, and MiniStack is still its partner project: the two work closely together.
+  </p>
+  <p class="quickstart-footer">
+    Prefer Docker Compose? Each guide has a Compose setup that runs the emulator and StackPort together, with a seed that creates demo resources.
     Already have an emulator running elsewhere? <a href="/docs/configuration/emulators/">Any AWS-compatible endpoint works.</a>
   </p>
 </section>
@@ -101,47 +118,47 @@ import EmulatorQuickstart from '../../components/EmulatorQuickstart.astro';
 
   <div class="features-grid">
     <div class="feature-card">
-      <div class="icon">📊</div>
-      <h3>35 services, one dashboard</h3>
-      <p>Every service probed in parallel, with resource counts that update live over a WebSocket. Star the ones you use and they move to the top.</p>
+      <div class="icon" aria-hidden="true">📊</div>
+      <h3>51 services, one dashboard</h3>
+      <p>Every service probed in parallel, with resource counts that update live over a WebSocket. Services your endpoint doesn't have are marked as not supported, and the ones you star move to the top.</p>
     </div>
     <div class="feature-card">
-      <div class="icon">🧭</div>
+      <div class="icon" aria-hidden="true">🧭</div>
       <h3>13 dedicated views</h3>
       <p>S3, DynamoDB, Lambda, SQS, SNS, EC2, IAM, RDS, KMS, Step Functions, CloudWatch Logs and Metrics, and Secrets Manager. Everything else gets a searchable table with JSON details.</p>
     </div>
     <div class="feature-card">
-      <div class="icon">🎓</div>
+      <div class="icon" aria-hidden="true">🧪</div>
+      <h3>API Explorer</h3>
+      <p>Call any operation of any service boto3 knows, from a form built from the API's own model. Copy the same request as an AWS CLI command or boto3 code.</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon" aria-hidden="true">🎓</div>
       <h3>Guided lessons</h3>
       <p>Learn AWS hands-on without an AWS account or a bill. Lessons run inside the console and check your real resources, so a step turns green when the thing exists.</p>
     </div>
     <div class="feature-card">
-      <div class="icon">✏️</div>
+      <div class="icon" aria-hidden="true">✏️</div>
       <h3>Make changes, not just look</h3>
       <p>Upload to S3, edit DynamoDB items, send SQS messages, publish to SNS, invoke Lambda, start Step Functions executions, tail logs live.</p>
     </div>
     <div class="feature-card">
-      <div class="icon">🔒</div>
+      <div class="icon" aria-hidden="true">🔒</div>
       <h3>Real AWS, read-only when you want</h3>
       <p>Browse an account through your profile, SSO or keys. Set <code>STACKPORT_ALLOW_WRITES=false</code> and the server refuses every write.</p>
     </div>
     <div class="feature-card">
-      <div class="icon">🔀</div>
+      <div class="icon" aria-hidden="true">🔀</div>
       <h3>Many endpoints at once</h3>
-      <p>Register emulators and accounts side by side, each with its own region and credentials, and switch from the top bar.</p>
+      <p>Register emulators and accounts side by side, each with its own region, credentials and certificate settings, and switch from the top bar.</p>
     </div>
     <div class="feature-card">
-      <div class="icon">💻</div>
-      <h3>A CLI for scripts and CI</h3>
-      <p><code>stackport status</code>, <code>list</code>, <code>describe</code> and <code>export</code> with table, JSON or CSV output. A VS Code extension is in early development.</p>
+      <div class="icon" aria-hidden="true">🐳</div>
+      <h3>pip, Docker and a CLI</h3>
+      <p>One Docker image for amd64 and arm64, or a plain <code>pip install</code>. The same package has a CLI (<code>status</code>, <code>list</code>, <code>describe</code>, <code>export</code>) for scripts and CI.</p>
     </div>
     <div class="feature-card">
-      <div class="icon">🐳</div>
-      <h3>One Docker image</h3>
-      <p>UI and API in a single container for amd64 and arm64, or a plain <code>pip install</code>. Configured entirely with environment variables.</p>
-    </div>
-    <div class="feature-card">
-      <div class="icon">⌨️</div>
+      <div class="icon" aria-hidden="true">⌨️</div>
       <h3>Built for daily use</h3>
       <p>Keyboard shortcuts, deep links to any resource, JSON and CSV export, and light and dark themes. Press <code>?</code> to see the shortcuts.</p>
     </div>
@@ -156,11 +173,11 @@ import EmulatorQuickstart from '../../components/EmulatorQuickstart.astro';
     <div class="screenshot-card">
       <picture class="theme-dark-only">
         <source srcset="/images/dashboard.webp" type="image/webp" />
-        <img src="/images/dashboard.png" alt="StackPort dashboard with every AWS service and its resource counts" width="4800" height="3000" loading="lazy" decoding="async" />
+        <img src="/images/dashboard.png" alt="StackPort dashboard in the dark theme, connected to AWS Emulator, with 51 of 51 services available and a card for each one showing its resource counts" width="3200" height="2000" loading="lazy" decoding="async" />
       </picture>
       <picture class="theme-light-only">
         <source srcset="/images/dashboard-light.webp" type="image/webp" />
-        <img src="/images/dashboard-light.png" alt="StackPort dashboard in the light theme" width="4800" height="3000" loading="lazy" decoding="async" />
+        <img src="/images/dashboard-light.png" alt="StackPort dashboard in the light theme, connected to AWS Emulator, with 51 of 51 services available and a card for each one showing its resource counts" width="3200" height="2000" loading="lazy" decoding="async" />
       </picture>
       <div class="caption">Dashboard: every service with live resource counts</div>
     </div>
@@ -233,9 +250,30 @@ import EmulatorQuickstart from '../../components/EmulatorQuickstart.astro';
   </div>
 </section>
 
+<section class="learn-highlight explorer-highlight">
+  <div class="screenshot-card">
+    <picture>
+      <source srcset="/images/explorer.webp" type="image/webp" />
+      <img src="/images/explorer.png" alt="The API Explorer running a DynamoDB Scan: the operation list with Read and Write badges, a form for the request, and the JSON response with its status and request ID" width="3200" height="2000" loading="lazy" decoding="async" />
+    </picture>
+  </div>
+  <div class="learn-text">
+    <h2>Call any AWS API, even without a view</h2>
+    <p>
+      Emulators implement far more than any console can show. The API Explorer reaches every operation of every service boto3 knows, against the endpoint you have selected.
+    </p>
+    <ul>
+      <li>A form built from the operation's own model, with a JSON view of the whole request.</li>
+      <li>The response as JSON, with its status, request ID and timing, and errors in the endpoint's own words.</li>
+      <li>The same request as an AWS CLI command or boto3 code, with any setup your emulator needs.</li>
+    </ul>
+    <a href="/docs/explorer/api-explorer/" class="learn-link">How the API Explorer works</a>
+  </div>
+</section>
+
 <section class="services">
-  <h2>35 AWS services</h2>
-  <p class="subtitle">Dedicated views highlighted. Every other service gets a searchable resource table.</p>
+  <h2>51 AWS services</h2>
+  <p class="subtitle">Dedicated views highlighted. Every other service gets a searchable resource table, and the <a href="/docs/explorer/api-explorer/">API Explorer</a> reaches the rest.</p>
 
   <div class="service-badges">
     <span class="service-badge custom">S3</span>
@@ -253,32 +291,55 @@ import EmulatorQuickstart from '../../components/EmulatorQuickstart.astro';
     <span class="service-badge custom">Secrets Manager</span>
     <span class="service-badge">ACM</span>
     <span class="service-badge">API Gateway</span>
+    <span class="service-badge">AppConfig</span>
     <span class="service-badge">AppSync</span>
     <span class="service-badge">Athena</span>
+    <span class="service-badge">Batch</span>
+    <span class="service-badge">Bedrock</span>
+    <span class="service-badge">Cloud Map</span>
     <span class="service-badge">CloudFormation</span>
     <span class="service-badge">CloudFront</span>
+    <span class="service-badge">CloudTrail</span>
+    <span class="service-badge">CodeBuild</span>
+    <span class="service-badge">CodeCommit</span>
+    <span class="service-badge">CodeDeploy</span>
+    <span class="service-badge">CodePipeline</span>
     <span class="service-badge">Cognito User Pools</span>
     <span class="service-badge">Cognito Identity</span>
     <span class="service-badge">ECR</span>
     <span class="service-badge">ECS</span>
     <span class="service-badge">EFS</span>
+    <span class="service-badge">EKS</span>
     <span class="service-badge">ElastiCache</span>
     <span class="service-badge">Elastic Load Balancing</span>
     <span class="service-badge">EMR</span>
     <span class="service-badge">EventBridge</span>
+    <span class="service-badge">EventBridge Pipes</span>
+    <span class="service-badge">EventBridge Scheduler</span>
     <span class="service-badge">Firehose</span>
     <span class="service-badge">Glue</span>
     <span class="service-badge">Kinesis</span>
+    <span class="service-badge">MSK</span>
+    <span class="service-badge">OpenSearch</span>
     <span class="service-badge">Route 53</span>
     <span class="service-badge">SES</span>
     <span class="service-badge">SSM Parameter Store</span>
+    <span class="service-badge">Verified Permissions</span>
     <span class="service-badge">WAFv2</span>
+    <span class="service-badge">X-Ray</span>
   </div>
+</section>
+
+<section class="faq" id="faq">
+  <h2>Questions people ask</h2>
+  <p class="subtitle">Short answers, with links to the details</p>
+
+  <Faq />
 </section>
 
 <section class="cta">
   <h2>Give it a try</h2>
-  <p>StackPort is free and open source, built in the open with the emulator community. If it saves you a few <code>aws --endpoint-url</code> commands, a star on GitHub helps other people find it.</p>
+  <p>StackPort is free and open source, built in the open with the emulator community. If it saves you a few <code>{'aws --endpoint-url'}</code> commands, a star on GitHub helps other people find it.</p>
   <div class="cta-actions">
     <a href="https://github.com/DaviReisVieira/stackport" class="primary star"><svg aria-hidden="true" viewBox="0 0 16 16" width="16" height="16"><path fill="currentColor" d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z"/></svg> Star on GitHub</a>
     <a href="/docs/quickstart/" class="secondary">Read the docs</a>

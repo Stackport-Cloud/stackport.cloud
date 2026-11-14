@@ -1,6 +1,23 @@
 ---
 title: KMS Browser
 description: A read-only web view of AWS KMS keys with their key policies, grants, aliases and rotation settings, for local emulators or real AWS.
+head:
+  - tag: meta
+    attrs:
+      property: og:image
+      content: https://stackport.cloud/images/og/kms.png
+  - tag: meta
+    attrs:
+      property: og:image:alt
+      content: 'The StackPort KMS browser showing a key''s details'
+  - tag: meta
+    attrs:
+      name: twitter:image
+      content: https://stackport.cloud/images/og/kms.png
+  - tag: meta
+    attrs:
+      name: twitter:image:alt
+      content: 'The StackPort KMS browser showing a key''s details'
 ---
 
 The KMS view is read-only and shows everything that decides who can use a key and how.

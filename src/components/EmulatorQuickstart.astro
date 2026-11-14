@@ -1,61 +1,89 @@
 ---
 /**
- * Side-by-side quick start, one card per emulator.
+ * Side-by-side quick start, one card per emulator, then one for any other endpoint.
  *
  * Every card has the same shape on purpose: start the emulator, then start
- * StackPort against it. Order is fixed (MiniStack, Floci, LocalStack, Moto),
- * per CONTRIBUTING.md#supported-emulators in the StackPort repository.
+ * StackPort against it. Order is fixed (AWS Emulator, MiniStack, Floci,
+ * LocalStack, Moto, then others), per CONTRIBUTING.md#supported-emulators in
+ * the StackPort repository.
  */
-interface Emulator {
+interface Card {
 	name: string;
-	guide: string;
-	image: string;
-	port: string;
-	/** Extra `docker run` flags the emulator needs to start. */
-	flags?: string;
+	href: string;
+	/** Visible link text, and the rest of its accessible name. */
+	linkText: string;
+	linkContext: string;
+	/** Lines starting with `#` are comments. */
+	start: string[];
+	stackport: string[];
 }
 
-const emulators: Emulator[] = [
-	{ name: 'MiniStack', guide: '/docs/guides/ministack/', image: 'ministackorg/ministack', port: '4566' },
-	{ name: 'Floci', guide: '/docs/guides/floci/', image: 'floci/floci', port: '4566' },
+const withTestKeys = (endpoint: string) => [
+	'# start StackPort',
+	'pip install stackport',
+	`AWS_ENDPOINT_URL=${endpoint} \\`,
+	'  AWS_ACCESS_KEY_ID=test AWS_SECRET_ACCESS_KEY=test stackport',
+];
+
+const guide = (name: string, slug: string, start: string[], stackport: string[]): Card => ({
+	name,
+	href: `/docs/guides/${slug}/`,
+	linkText: 'Guide',
+	linkContext: `: using StackPort with ${name}`,
+	start,
+	stackport,
+});
+
+const cards: Card[] = [
+	guide('AWS Emulator', 'aws-emulator', ["# start AWS Emulator, installed as in AWS's guide", 'aws-emulator'], [
+		'# start StackPort: it finds the keys and certificate',
+		'pip install stackport',
+		'AWS_ENDPOINT_URL=https://127.0.0.1:9297 stackport',
+	]),
+	guide('MiniStack', 'ministack', ['# start MiniStack', 'docker run -d -p 4566:4566 ministackorg/ministack'], withTestKeys('http://localhost:4566')),
+	guide('Floci', 'floci', ['# start Floci', 'docker run -d -p 4566:4566 floci/floci'], withTestKeys('http://localhost:4566')),
+	guide(
+		'LocalStack',
+		'localstack',
+		['# start LocalStack', 'docker run -d -p 4566:4566 -e LOCALSTACK_AUTH_TOKEN=<your-token> localstack/localstack'],
+		withTestKeys('http://localhost:4566'),
+	),
+	guide('Moto', 'moto', ['# start Moto', 'docker run -d -p 5000:5000 motoserver/moto'], withTestKeys('http://localhost:5000')),
 	{
-		name: 'LocalStack',
-		guide: '/docs/guides/localstack/',
-		image: 'localstack/localstack',
-		port: '4566',
-		flags: '-e LOCALSTACK_AUTH_TOKEN=<your-token>',
+		name: 'Anything else',
+		href: '/docs/configuration/emulators/#other-aws-compatible-endpoints',
+		linkText: 'Other endpoints',
+		linkContext: ' that work with StackPort',
+		start: ['# any endpoint that speaks the AWS API:', '# MinIO, DynamoDB Local, your own emulator'],
+		stackport: [
+			'# start StackPort with the keys it expects',
+			'pip install stackport',
+			'AWS_ENDPOINT_URL=http://localhost:9000 \\',
+			'  AWS_ACCESS_KEY_ID=... AWS_SECRET_ACCESS_KEY=... stackport',
+		],
 	},
-	{ name: 'Moto', guide: '/docs/guides/moto/', image: 'motoserver/moto', port: '5000' },
 ];
 
-const escape = (text: string) =>
-	text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const escape = (text: string) => text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
-const lines = (e: Emulator) => [
-	{ cls: 'comment', text: `# start ${e.name}` },
-	{ cls: 'command', text: `docker run -d -p ${e.port}:${e.port} ${e.flags ? `${e.flags} ` : ''}${e.image}` },
-	{ cls: 'blank', text: '' },
-	{ cls: 'comment', text: '# start StackPort' },
-	{ cls: 'command', text: 'pip install stackport' },
-	{ cls: 'command', text: `AWS_ENDPOINT_URL=http://localhost:${e.port} \\` },
-	{ cls: 'command', text: '  AWS_ACCESS_KEY_ID=test AWS_SECRET_ACCESS_KEY=test stackport' },
-];
-
-const code = (e: Emulator) =>
-	lines(e)
-		.map((l) => `<span class="${l.cls}">${escape(l.text)}</span>`)
+const code = (c: Card) =>
+	[...c.start, '', ...c.stackport]
+		.map((text) => `<span class="${text === '' ? 'blank' : text.startsWith('#') ? 'comment' : 'command'}">${escape(text)}</span>`)
 		.join('\n');
 ---
 
 <div class="emulator-grid">
 	{
-		emulators.map((e) => (
+		cards.map((c) => (
 			<div class="emulator-card">
 				<div class="emulator-card-header">
-					<h3>{e.name}</h3>
-					<a href={e.guide}>Guide</a>
+					<h3>{c.name}</h3>
+					<a href={c.href}>
+						{c.linkText}
+						<span class="sr-only">{c.linkContext}</span>
+					</a>
 				</div>
-				<pre class="quickstart-code" set:html={code(e)} />
+				<pre class="quickstart-code" set:html={code(c)} />
 			</div>
 		))
 	}

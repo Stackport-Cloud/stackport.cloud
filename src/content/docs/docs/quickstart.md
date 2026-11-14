@@ -1,6 +1,6 @@
 ---
 title: Quick Start
-description: Start StackPort next to MiniStack, Floci, LocalStack or Moto, create a few resources, and browse them in under a minute.
+description: Start StackPort next to AWS Emulator, MiniStack, Floci, LocalStack or Moto, create a few resources, and browse them in a web UI in under a minute.
 ---
 
 ## 1. Start an emulator and StackPort
@@ -8,6 +8,10 @@ description: Start StackPort next to MiniStack, Floci, LocalStack or Moto, creat
 Pick the emulator you use. Each line starts it on your machine; StackPort itself is the same in every case.
 
 ```bash
+# AWS Emulator (installed from AWS's Linux package; on macOS and Windows,
+# run it in a container as in AWS's Docker guide)
+aws-emulator
+
 # MiniStack
 docker run -d -p 4566:4566 ministackorg/ministack
 
@@ -25,17 +29,22 @@ Then start StackPort and point it at the emulator:
 
 ```bash
 pip install stackport
+
+# AWS Emulator: StackPort reads the keys and certificate it writes on each start
+AWS_ENDPOINT_URL=https://127.0.0.1:9297 stackport
+
+# MiniStack, Floci, LocalStack (use :5000 for Moto)
 AWS_ENDPOINT_URL=http://localhost:4566 \
-  AWS_ACCESS_KEY_ID=test AWS_SECRET_ACCESS_KEY=test stackport   # use :5000 for Moto
+  AWS_ACCESS_KEY_ID=test AWS_SECRET_ACCESS_KEY=test stackport
 ```
 
-Emulators accept any credentials, but StackPort needs a pair to sign its requests. If your shell or `~/.aws` already has some, you can leave the two `test` variables out.
+Most emulators accept any credentials, but StackPort needs a pair to sign its requests. If your shell or `~/.aws` already has some, you can leave the two `test` variables out. AWS Emulator only accepts the keys it creates, and StackPort finds those by itself.
 
-Prefer containers for everything? The [MiniStack](/docs/guides/ministack/), [Floci](/docs/guides/floci/), [LocalStack](/docs/guides/localstack/) and [Moto](/docs/guides/moto/) guides each have a Compose file that runs the emulator and StackPort together.
+Prefer containers for everything? The [AWS Emulator](/docs/guides/aws-emulator/), [MiniStack](/docs/guides/ministack/), [Floci](/docs/guides/floci/), [LocalStack](/docs/guides/localstack/) and [Moto](/docs/guides/moto/) guides each have a Compose setup that runs the emulator and StackPort together.
 
 ## 2. Open the dashboard
 
-Go to **http://localhost:8080**. The dashboard lists the 35 services StackPort knows about, with a resource count for each, and updates live as things change.
+Go to **http://localhost:8080**. The dashboard lists the 51 services StackPort knows about, with a resource count for each, and updates live as things change. The subtitle names the emulator it is connected to.
 
 ## 3. Create some resources
 
@@ -46,6 +55,7 @@ export AWS_ENDPOINT_URL=http://localhost:4566
 export AWS_ACCESS_KEY_ID=test
 export AWS_SECRET_ACCESS_KEY=test
 export AWS_REGION=us-east-1
+# For AWS Emulator, use https://127.0.0.1:9297 and the setup lines from its guide instead of the keys
 
 aws s3 mb s3://my-bucket
 aws sqs create-queue --queue-name my-queue
@@ -64,7 +74,7 @@ The counts on the dashboard pick up the new resources within a few seconds. Clic
 - **SQS**: send single or batch messages, poll, delete, purge, and keep reusable saved messages.
 - **Lambda**: inspect configuration, invoke with an event template, edit memory, timeout and environment.
 
-Every view is listed in [Service Browsers](/docs/services/overview/).
+Every view is listed in [Service Browsers](/docs/services/overview/). For anything without a view, open **API Explorer** (`g` then `e`) and call the operation directly. See [API Explorer](/docs/explorer/api-explorer/).
 
 ## 5. Try a guided lesson
 

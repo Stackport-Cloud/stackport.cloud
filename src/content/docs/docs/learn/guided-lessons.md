@@ -1,6 +1,23 @@
 ---
 title: Guided lessons
 description: Learn AWS hands-on without an AWS account or a bill. StackPort's guided lessons run inside the console against your local emulator and check your real resources as you go.
+head:
+  - tag: meta
+    attrs:
+      property: og:image
+      content: https://stackport.cloud/images/og/learn.png
+  - tag: meta
+    attrs:
+      property: og:image:alt
+      content: 'A guided lesson in the StackPort Learn panel next to the S3 view'
+  - tag: meta
+    attrs:
+      name: twitter:image
+      content: https://stackport.cloud/images/og/learn.png
+  - tag: meta
+    attrs:
+      name: twitter:image:alt
+      content: 'A guided lesson in the StackPort Learn panel next to the S3 view'
 ---
 
 StackPort includes guided lessons that teach AWS by doing it, against your own local emulator. You need no AWS account, no credit card, and nothing you do can show up on a bill.
@@ -20,7 +37,7 @@ Lessons are grouped into trails. The first trail, **AWS first steps**, starts wi
 Every step gives you a choice:
 
 - **Do it here.** The panel points at the control in the console to use, with the exact values to type, ready to copy.
-- **With the CLI.** The AWS CLI command, already filled in with your endpoint and your resource names, plus a note on what each flag does.
+- **With the CLI.** The AWS CLI command, already filled in with your endpoint and your resource names, plus a note on what each flag does. When your emulator needs shell setup beyond `--endpoint-url`, as [AWS Emulator](/docs/guides/aws-emulator/#the-aws-cli-next-to-stackport) does for its keys and certificate, the CLI tab shows those lines first.
 
 Either way works, and you can mix them within a lesson. Steps also explain *why it matters*, linking to the AWS documentation where it helps, so you come away knowing what the service does rather than which buttons to press.
 

@@ -1,0 +1,71 @@
+---
+/**
+ * Landing page FAQ. The same text feeds the visible list and the FAQPage
+ * structured data, so the two can't drift apart. Answers are HTML limited to
+ * what schema.org Answer text may hold (links, code).
+ */
+interface Entry {
+	question: string;
+	answer: string;
+}
+
+const faq: Entry[] = [
+	{
+		question: 'Is there a UI for AWS Emulator?',
+		answer:
+			'AWS Emulator itself has no graphical interface: you use it through the AWS CLI and SDKs. StackPort is an independent, open-source web console that works with it. Start StackPort with <code>AWS_ENDPOINT_URL=https://127.0.0.1:9297 stackport</code> and it finds the keys and certificate the emulator writes to <code>~/.aws/emulator/&lt;port&gt;/</code> by itself. See <a href="/docs/guides/aws-emulator/">Using StackPort with AWS Emulator</a>.',
+	},
+	{
+		question: 'Does StackPort work with MiniStack, Floci, LocalStack and Moto?',
+		answer:
+			'Yes. StackPort talks to every emulator over the standard AWS API, so there is nothing to install inside it, and any other AWS-compatible endpoint works too. MiniStack is StackPort\'s partner project: StackPort started as a web UI pull request to MiniStack. Each emulator has its own guide: <a href="/docs/guides/ministack/">MiniStack</a>, <a href="/docs/guides/floci/">Floci</a>, <a href="/docs/guides/localstack/">LocalStack</a> and <a href="/docs/guides/moto/">Moto</a>.',
+	},
+	{
+		question: 'Is StackPort an emulator?',
+		answer:
+			'No. StackPort doesn\'t emulate AWS. It is a console and API client: it shows you what your emulator, or a real AWS account, holds, and lets you change it.',
+	},
+	{
+		question: 'Is it safe to use with a real AWS account?',
+		answer:
+			'StackPort can browse a real account through your profile, SSO or access keys, and shows a warning banner on every page while it does. Writes stay enabled unless you set <code>STACKPORT_ALLOW_WRITES=false</code>; then the server refuses every request that would change AWS. Lambda Invoke stays available, and it runs your function\'s code. StackPort has no login, so it only listens on your own machine (<code>127.0.0.1</code>) unless you open it up, and a read-only IAM role adds a second layer. See <a href="/docs/configuration/real-aws/">Real AWS and Read-only Mode</a>.',
+	},
+	{
+		question: 'Does StackPort send data anywhere?',
+		answer:
+			'No. StackPort has no telemetry or analytics. Its server only talks to the endpoints you configure (for a real AWS endpoint, that is AWS and wherever your credentials come from, such as SSO), and the web UI only talks to the StackPort server. Endpoints you add and your lesson progress are saved on your machine, in <code>~/.stackport</code>.',
+	},
+	{
+		question: 'Is StackPort made by AWS or by an emulator project?',
+		answer:
+			'No. StackPort is an independent, MIT-licensed open-source project and is not affiliated with or endorsed by AWS. MiniStack is its partner project. Contributions that improve support for any emulator are welcome on <a href="https://github.com/DaviReisVieira/stackport">GitHub</a>.',
+	},
+	{
+		question: 'How do I install it?',
+		answer:
+			'Run <code>pip install stackport</code> (Python 3.10 or newer) and then <code>stackport</code>, or run the <code>davireis/stackport</code> Docker image, and open http://localhost:8080. See <a href="/docs/installation/">Installation</a>.',
+	},
+];
+
+const structuredData = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	mainEntity: faq.map(({ question, answer }) => ({
+		'@type': 'Question',
+		name: question,
+		acceptedAnswer: { '@type': 'Answer', text: answer },
+	})),
+};
+---
+
+<script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData).replace(/</g, '\\u003c')} />
+<div class="faq-list">
+	{
+		faq.map(({ question, answer }) => (
+			<div class="faq-item">
+				<h3>{question}</h3>
+				<p set:html={answer} />
+			</div>
+		))
+	}
+</div>

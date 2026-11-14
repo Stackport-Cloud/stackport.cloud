@@ -544,6 +544,68 @@
 		font-size: 0.9em;
 	}
 
+	/* API Explorer highlight: the Learn layout, mirrored */
+	[data-page-type="landing"] .explorer-highlight {
+		grid-template-columns: 3fr 2fr;
+	}
+
+	/* FAQ */
+	[data-page-type="landing"] .faq {
+		max-width: 72rem;
+		margin: 0 auto;
+		padding: 4rem 1.5rem;
+	}
+
+	[data-page-type="landing"] .faq h2 {
+		font-size: var(--sl-text-3xl);
+		font-weight: 700;
+		margin: 0 0 0.5rem;
+		text-align: center;
+	}
+
+	[data-page-type="landing"] .faq .subtitle {
+		color: var(--sl-color-gray-3);
+		margin: 0 0 3rem;
+		font-size: var(--sl-text-lg);
+		text-align: center;
+	}
+
+	[data-page-type="landing"] .faq-list {
+		display: grid;
+		gap: 1rem;
+		max-width: 52rem;
+		margin: 0 auto;
+	}
+
+	[data-page-type="landing"] .faq-item {
+		background: var(--sl-color-gray-6);
+		border: 1px solid var(--sl-color-gray-5);
+		border-radius: 0.75rem;
+		padding: 1.5rem;
+	}
+
+	[data-page-type="landing"] .faq-item h3 {
+		font-size: var(--sl-text-lg);
+		font-weight: 600;
+		margin: 0 0 0.5rem;
+	}
+
+	[data-page-type="landing"] .faq-item p {
+		color: var(--sl-color-gray-2);
+		margin: 0;
+		font-size: var(--sl-text-sm);
+		line-height: 1.6;
+	}
+
+	[data-page-type="landing"] :is(.faq-item, .quickstart-footer, .services .subtitle) a {
+		color: var(--sl-color-text-accent);
+	}
+
+	[data-page-type="landing"] .faq-item code {
+		font-size: 0.9em;
+		overflow-wrap: anywhere;
+	}
+
 	@media (max-width: 50rem) {
 		[data-page-type="landing"] .emulator-grid {
 			grid-template-columns: 1fr;
@@ -552,6 +614,10 @@
 		[data-page-type="landing"] .learn-highlight {
 			grid-template-columns: 1fr;
 			padding: 2rem 1rem;
+		}
+
+		[data-page-type="landing"] .explorer-highlight .learn-text {
+			order: -1;
 		}
 	}
 
@@ -566,7 +632,7 @@
 	}
 
 	/* Starlight spaces markdown siblings with margin-top; grids handle their own gaps */
-	[data-page-type="landing"] :is(.features-grid, .emulator-grid, .screenshot-grid, .hero, .learn-highlight, .hero-actions, .cta-actions) > * {
+	[data-page-type="landing"] :is(.features-grid, .emulator-grid, .screenshot-grid, .hero, .learn-highlight, .hero-actions, .cta-actions, .faq-list) > * {
 		margin-top: 0;
 	}
 
