@@ -1,9 +1,16 @@
 ---
 title: Using StackPort with LocalStack
-description: Run StackPort as a web console for LocalStack. Setup, a Docker Compose file, what works, and tips for browsing LocalStack resources in a UI.
+description: 'Use StackPort as a free, open-source web UI for LocalStack: a live dashboard, service views and an API Explorer. Set up with pip or Docker Compose.'
+head:
+  - tag: title
+    content: 'LocalStack UI: a web console for LocalStack | StackPort'
+  - tag: meta
+    attrs:
+      property: og:title
+      content: 'LocalStack UI: a web console for LocalStack'
 ---
 
-[LocalStack](https://docs.localstack.cloud) is an AWS emulator that serves the whole API surface on a single port, `4566`. StackPort gives it a web console: a dashboard of every service with live resource counts, and dedicated views for S3, DynamoDB, Lambda, SQS and more.
+[LocalStack](https://docs.localstack.cloud) is an AWS emulator that serves the whole API surface on a single port, `4566`. StackPort gives it a web console: a dashboard of every service with live resource counts, dedicated views for S3, DynamoDB, Lambda, SQS and more, and an [API Explorer](/docs/explorer/api-explorer/) for every other operation.
 
 StackPort talks to LocalStack over the standard AWS API, the same way the AWS CLI does. Nothing needs to be installed or enabled inside LocalStack.
 
@@ -28,13 +35,13 @@ AWS_ENDPOINT_URL=http://localhost:4566 \
 Or with Docker, reaching LocalStack on your host:
 
 ```bash
-docker run -p 8080:8080 \
+docker run -p 127.0.0.1:8080:8080 \
   -e AWS_ENDPOINT_URL=http://host.docker.internal:4566 \
   -e AWS_ACCESS_KEY_ID=test -e AWS_SECRET_ACCESS_KEY=test \
   davireis/stackport
 ```
 
-Open **http://localhost:8080**. LocalStack accepts any credentials, but StackPort has no default ones and needs a pair to sign its requests. Without them, every service shows zero resources. With pip, credentials already in your shell or `~/.aws` work too; the Docker image only sees what you pass with `-e`.
+Open **http://localhost:8080**. LocalStack accepts any credentials, but StackPort has no default ones and needs a pair to sign its requests. Without them, the dashboard says StackPort has no credentials to sign requests with. With pip, credentials already in your shell or `~/.aws` work too; the Docker image only sees what you pass with `-e`.
 
 ## Docker Compose
 
@@ -45,7 +52,7 @@ services:
   stackport:
     image: davireis/stackport:latest
     ports:
-      - "8080:8080"
+      - "127.0.0.1:8080:8080"   # drop 127.0.0.1 to open it to your network
     environment:
       - AWS_ENDPOINT_URL=http://localstack:4566
       - AWS_REGION=us-east-1
@@ -84,9 +91,10 @@ The seed creates a few resources across S3, SQS, SNS, DynamoDB, Secrets Manager,
 
 ## What works
 
-- **The dashboard** probes all 35 services StackPort knows about. Services LocalStack implements show their resource counts; any it does not implement show as unavailable, and nothing else is affected.
+- **The dashboard** probes all 51 services StackPort knows about and names the emulator it is connected to. Services LocalStack implements show their resource counts; any it does not implement are marked "Not supported" or "Unavailable" with the reason, and nothing else is affected.
 - **All 13 service views** (S3, DynamoDB, Lambda, SQS, SNS, EC2, IAM, RDS, KMS, Step Functions, CloudWatch Logs, CloudWatch Metrics and Secrets Manager) use standard AWS API calls, so each one works as far as LocalStack implements the calls behind it.
 - **Write operations** such as uploading to S3, editing DynamoDB items, sending SQS messages or starting Step Functions executions go straight to LocalStack.
+- **The [API Explorer](/docs/explorer/api-explorer/)** runs any operation against LocalStack, including services StackPort has no view for.
 - **[Guided lessons](/docs/learn/guided-lessons/)** run against LocalStack like any local endpoint, and verify each step against its real state.
 - **The [CLI](/docs/cli/commands/)** works the same: `stackport status --endpoint http://localhost:4566`.
 
@@ -97,7 +105,7 @@ If a view behaves worse on LocalStack than on other emulators, please [open an i
 - **Returned URLs.** LocalStack builds the URLs it returns from `LOCALSTACK_HOST`. With the default SQS strategy, queue URLs use a subdomain such as `sqs.us-east-1.localhost.localstack.cloud`, which other containers usually cannot resolve, so the Compose file above follows the LocalStack SQS docs and sets `SQS_ENDPOINT_STRATEGY=path` together with `LOCALSTACK_HOST`.
 - **Health endpoint.** LocalStack answers on `/_localstack/health` with the state of each service, which the Compose file above uses so StackPort only starts once LocalStack is ready. State is in memory by default, so a restart starts clean; persistence across restarts is part of LocalStack's paid plans.
 - **Auth token.** Since release 2026.3.0, `localstack/localstack` needs an auth token to start; without one the container exits with "License activation failed". Create a LocalStack account, copy your token from the LocalStack web app and pass it as `LOCALSTACK_AUTH_TOKEN`. LocalStack offers a free Hobby plan for non-commercial use.
-- **Switching emulators.** StackPort saves its endpoint the first time it starts. If you move between emulators, give each one a name with `STACKPORT_ENDPOINTS` and switch from the top bar. See [Saved endpoints](/docs/configuration/endpoints/#saved-endpoints-and-aws_endpoint_url).
+- **Switching emulators.** Starting StackPort with a different `AWS_ENDPOINT_URL` points the `default` endpoint there for that run only. To keep several emulators at hand, give each one a name with `STACKPORT_ENDPOINTS` and switch from the top bar. See [Saved endpoints](/docs/configuration/endpoints/#saved-endpoints-and-aws_endpoint_url).
 - **Only probe what you use.** If LocalStack is slow to answer for services you never touch, set `STACKPORT_SERVICES` to the ones you need, for example `STACKPORT_SERVICES=s3,sqs,dynamodb,lambda`.
 
 ## Related
@@ -105,3 +113,4 @@ If a view behaves worse on LocalStack than on other emulators, please [open an i
 - [Emulators overview](/docs/configuration/emulators/) compares the setup for every supported emulator.
 - [Docker](/docs/configuration/docker/) covers networking and health checks in more detail.
 - [Service Browsers](/docs/services/overview/) lists what each view can do.
+- [API Explorer](/docs/explorer/api-explorer/) calls any operation, with or without a view.

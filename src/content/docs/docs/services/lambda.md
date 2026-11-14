@@ -1,6 +1,23 @@
 ---
 title: Lambda Browser
 description: Inspect Lambda functions on local emulators or AWS, invoke them with event templates, edit memory, timeout and environment variables, and download the code package.
+head:
+  - tag: meta
+    attrs:
+      property: og:image
+      content: https://stackport.cloud/images/og/lambda.png
+  - tag: meta
+    attrs:
+      property: og:image:alt
+      content: 'The StackPort Lambda browser showing a function''s configuration'
+  - tag: meta
+    attrs:
+      name: twitter:image
+      content: https://stackport.cloud/images/og/lambda.png
+  - tag: meta
+    attrs:
+      name: twitter:image:alt
+      content: 'The StackPort Lambda browser showing a function''s configuration'
 ---
 
 The Lambda view shows how each function is configured and lets you invoke it and adjust it on the spot.

@@ -7,8 +7,9 @@ S3 and DynamoDB are often the first two services people run locally, and the one
 
 ## With a full emulator
 
-If you already run MiniStack, Floci, LocalStack or Moto, point StackPort at it and both views are there, next to every other service. The guides cover each one:
+If you already run AWS Emulator, MiniStack, Floci, LocalStack or Moto, point StackPort at it and both views are there, next to every other service. The guides cover each one:
 
+- [Using StackPort with AWS Emulator](/docs/guides/aws-emulator/)
 - [Using StackPort with MiniStack](/docs/guides/ministack/)
 - [Using StackPort with Floci](/docs/guides/floci/)
 - [Using StackPort with LocalStack](/docs/guides/localstack/)

@@ -3,7 +3,7 @@ import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 
 const SITE = 'https://stackport.cloud';
-const OG_IMAGE = `${SITE}/images/dashboard.png`;
+const OG_IMAGE = `${SITE}/images/og/dashboard.png`;
 const OG_IMAGE_ALT = 'The StackPort dashboard listing AWS services with live resource counts';
 
 // https://astro.build/config
@@ -13,7 +13,7 @@ export default defineConfig({
 		starlight({
 			title: 'StackPort',
 			description:
-				'Open-source web console for local AWS emulators (MiniStack, Floci, LocalStack, Moto) and real AWS accounts. Browse 35 services, with dedicated views for S3, DynamoDB, Lambda, SQS and more.',
+				'Free, open-source web UI for local AWS emulators (AWS Emulator, MiniStack, Floci, LocalStack, Moto) and real AWS accounts. Browse 51 services and call any AWS API from your browser.',
 			logo: {
 				src: './public/logo.svg',
 			},
@@ -25,11 +25,16 @@ export default defineConfig({
 				baseUrl: 'https://github.com/Stackport-Cloud/stackport.cloud/edit/main/',
 			},
 			customCss: ['./src/styles/landing.css'],
+			components: {
+				Footer: './src/components/Footer.astro',
+			},
 			routeMiddleware: './src/routeData.ts',
 			head: [
 				{ tag: 'link', attrs: { rel: 'describedby', type: 'text/markdown', href: '/llms.txt', title: 'llms.txt' } },
 				{ tag: 'meta', attrs: { property: 'og:image', content: OG_IMAGE } },
 				{ tag: 'meta', attrs: { property: 'og:image:type', content: 'image/png' } },
+				{ tag: 'meta', attrs: { property: 'og:image:width', content: '1200' } },
+				{ tag: 'meta', attrs: { property: 'og:image:height', content: '630' } },
 				{ tag: 'meta', attrs: { property: 'og:image:alt', content: OG_IMAGE_ALT } },
 				{ tag: 'meta', attrs: { name: 'twitter:image', content: OG_IMAGE } },
 				{ tag: 'meta', attrs: { name: 'twitter:image:alt', content: OG_IMAGE_ALT } },
@@ -47,6 +52,7 @@ export default defineConfig({
 				{
 					label: 'Guides',
 					items: [
+						{ label: 'With AWS Emulator', slug: 'docs/guides/aws-emulator' },
 						{ label: 'With MiniStack', slug: 'docs/guides/ministack' },
 						{ label: 'With Floci', slug: 'docs/guides/floci' },
 						{ label: 'With LocalStack', slug: 'docs/guides/localstack' },
@@ -82,6 +88,10 @@ export default defineConfig({
 						{ label: 'CloudWatch Metrics', slug: 'docs/services/cloudwatch-metrics' },
 						{ label: 'Secrets Manager', slug: 'docs/services/secrets-manager' },
 					],
+				},
+				{
+					label: 'API Explorer',
+					items: [{ label: 'Call any AWS API', slug: 'docs/explorer/api-explorer' }],
 				},
 				{
 					label: 'Learn',

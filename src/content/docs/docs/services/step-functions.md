@@ -1,6 +1,23 @@
 ---
 title: Step Functions Browser
 description: Visualize Step Functions state machines as a graph, start and stop executions, and follow each run on an execution path overlay and a per-state timeline.
+head:
+  - tag: meta
+    attrs:
+      property: og:image
+      content: https://stackport.cloud/images/og/stepfunctions.png
+  - tag: meta
+    attrs:
+      property: og:image:alt
+      content: 'A Step Functions state machine graph with its execution path in StackPort'
+  - tag: meta
+    attrs:
+      name: twitter:image
+      content: https://stackport.cloud/images/og/stepfunctions.png
+  - tag: meta
+    attrs:
+      name: twitter:image:alt
+      content: 'A Step Functions state machine graph with its execution path in StackPort'
 ---
 
 The Step Functions view draws your state machine and shows exactly which path each execution took through it.

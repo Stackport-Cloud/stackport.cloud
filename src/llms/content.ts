@@ -6,19 +6,22 @@ export type DocEntry = CollectionEntry<'docs'>;
 
 export const LLMS_HEADER = `# StackPort
 
-> StackPort is an open-source (MIT) web console for local AWS emulators and real AWS accounts. It connects to MiniStack, Floci, LocalStack, Moto, or any AWS-compatible endpoint over the standard AWS API and lets you browse, inspect, and manage resources across 35 AWS services.
+> StackPort is a free, open-source (MIT) web UI and console for local AWS emulators and real AWS accounts. It connects to AWS Emulator, MiniStack, Floci, LocalStack, Moto, or any AWS-compatible endpoint over the standard AWS API and lets you browse, inspect, and manage resources across 51 AWS services, and call any AWS API operation from an API Explorer.
 
 Key facts:
 
-- Install with \`pip install stackport\` (Python 3.10+) and run \`stackport\`, or run the Docker image \`davireis/stackport\`. The UI is served on http://localhost:8080.
-- Point it at an emulator with \`AWS_ENDPOINT_URL\`, for example \`AWS_ENDPOINT_URL=http://localhost:4566 stackport\`. When it is unset, StackPort uses real AWS through the standard credential chain. Several endpoints, each with its own region and credentials, can be configured at once.
+- Install with \`pip install stackport\` (Python 3.10+) and run \`stackport\`, or run the Docker image \`davireis/stackport\`. The UI is served on http://localhost:8080, on 127.0.0.1 only by default (StackPort has no login).
+- Point it at an emulator with \`AWS_ENDPOINT_URL\`, for example \`AWS_ENDPOINT_URL=http://localhost:4566 stackport\`. When it is unset, StackPort uses real AWS through the standard credential chain. Several endpoints, each with its own region, credentials and certificate settings, can be configured at once.
 - StackPort is not an emulator. It does not emulate AWS itself; it is a client that talks to an emulator or to AWS with boto3. Nothing is installed inside the emulator.
-- Supported emulators are documented side by side: MiniStack, Floci, LocalStack, Moto. No emulator is preferred. Any other endpoint that speaks the AWS API also works.
-- 13 services have dedicated views (S3, DynamoDB, Lambda, SQS, SNS, IAM, EC2, RDS, CloudWatch Logs, CloudWatch metrics and alarms, Secrets Manager, KMS, Step Functions). The remaining services get a generic, searchable resource table.
-- Writes (S3 uploads, DynamoDB item edits, SQS messages, SNS publishes, and others) are on by default, including against real AWS. \`STACKPORT_ALLOW_WRITES=false\` turns on read-only mode, in which the server refuses every write (Lambda Invoke stays available).
+- Supported emulators are documented side by side, in this order: AWS Emulator, MiniStack, Floci, LocalStack, Moto. Any other endpoint that speaks the AWS API also works.
+- AWS Emulator (AWS's local emulator, which has no graphical interface of its own) works with \`AWS_ENDPOINT_URL=https://127.0.0.1:9297 stackport\`: StackPort reads the keys and certificate the emulator writes to \`~/.aws/emulator/<port>/\` on every start (\`STACKPORT_AWS_EMULATOR_DIR\` changes the folder), and follows them when the emulator restarts.
+- 13 services have dedicated views (S3, DynamoDB, Lambda, SQS, SNS, IAM, EC2, RDS, CloudWatch Logs, CloudWatch metrics and alarms, Secrets Manager, KMS, Step Functions). The other 38 get a generic, searchable resource table.
+- The API Explorer calls any operation of any service botocore knows, from a form built from the API model, and copies it as an AWS CLI command or boto3 code (with the shell setup AWS Emulator needs, when it is the endpoint).
+- Writes (S3 uploads, DynamoDB item edits, SQS messages, SNS publishes, and others) are on by default, including against real AWS. \`STACKPORT_ALLOW_WRITES=false\` turns on read-only mode, in which the server refuses every write (Lambda Invoke stays available) and the API Explorer only runs operations that read; operations that hand out credentials or tokens count as writes.
 - Also included: guided lessons that check real resource state, tag editing, JSON/CSV export, and a CLI (\`serve\`, \`status\`, \`list\`, \`describe\`, \`export\`).
+- No telemetry or analytics: the server only talks to the endpoints you configure (for real AWS, also to wherever your credentials come from, such as SSO), and the web UI only talks to the StackPort server.
 - Backend: Python, FastAPI, boto3. Frontend: React with the Cloudscape Design System.
-- StackPort is a community project and is not affiliated with Amazon Web Services or with any of the emulator projects.
+- StackPort is an independent open-source project and is not affiliated with or endorsed by Amazon Web Services. MiniStack is its partner project: StackPort started as a web UI pull request to MiniStack.
 
 Every page listed below is plain Markdown. The same page in HTML lives at the same path without \`.md\` and with a trailing slash.`;
 
@@ -28,6 +31,7 @@ export const SECTIONS: Array<{ title: string; match: (id: string) => boolean }> 
 	{ title: 'Emulator guides', match: (id) => id.startsWith('docs/guides/') },
 	{ title: 'Configuration', match: (id) => id.startsWith('docs/configuration/') },
 	{ title: 'Service views', match: (id) => id.startsWith('docs/services/') },
+	{ title: 'API Explorer', match: (id) => id.startsWith('docs/explorer/') },
 	{ title: 'Guided lessons', match: (id) => id.startsWith('docs/learn/') },
 	{ title: 'CLI', match: (id) => id.startsWith('docs/cli/') },
 ];
@@ -40,11 +44,13 @@ export const OPTIONAL_LINKS = [
 
 // Pages listed here come first, in this order; everything else follows alphabetically.
 // Emulator pages keep the fixed order from CONTRIBUTING.md#supported-emulators
-// (MiniStack, Floci, LocalStack, Moto), so never let them fall back to alphabetical.
+// (AWS Emulator, MiniStack, Floci, LocalStack, Moto, then others), so never let
+// them fall back to alphabetical.
 const FIXED_ORDER = [
 	'docs/introduction',
 	'docs/installation',
 	'docs/quickstart',
+	'docs/guides/aws-emulator',
 	'docs/guides/ministack',
 	'docs/guides/floci',
 	'docs/guides/localstack',
@@ -70,6 +76,7 @@ const FIXED_ORDER = [
 	'docs/services/cloudwatch-logs',
 	'docs/services/cloudwatch-metrics',
 	'docs/services/secrets-manager',
+	'docs/explorer/api-explorer',
 ];
 
 function sortKey(id: string): string {
